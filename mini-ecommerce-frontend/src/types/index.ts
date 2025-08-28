@@ -16,6 +16,8 @@ export interface CartItem {
 export interface Order {
     id: string;
     items: CartItem[];
-    totalAmount: number;
+    total: number;
     createdAt: Date;
+     name: string;   
+     email: string; 
 }
