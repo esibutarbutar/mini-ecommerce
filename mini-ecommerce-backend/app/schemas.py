@@ -24,9 +24,11 @@ class StoreBase(BaseModel):
     name: str
     address: str | None = None
     image_url: str | None = None
+    rating: float | None = None
 
 class StoreCreate(StoreBase):
     pass
+
 
 class Store(StoreBase):
     id: int

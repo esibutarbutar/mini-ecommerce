@@ -8,6 +8,7 @@ class Store(Base):
     name = Column(String(255), index=True)
     address = Column(String(255), nullable=True)
     image_url = Column(String(255), nullable=True)
+    rating = Column(Float, nullable=True, default=0)
 
 class Product(Base):
     __tablename__ = "products"

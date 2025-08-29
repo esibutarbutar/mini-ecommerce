@@ -3,6 +3,7 @@ export interface Store {
     name: string;
     address?: string;
     image_url?: string;
+    rating?: number;
 }
 export interface Product {
     id: string;

@@ -58,7 +58,16 @@ const ProductList: React.FC = () => {
         return (
             <div>
                 <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Pilih Toko</h2>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center' }}>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '2rem',
+                        justifyItems: 'center',
+                        margin: '0 auto',
+                        maxWidth: '1100px',
+                    }}
+                >
                     {stores.map(store => (
                         <div
                             key={store.id}
@@ -67,12 +76,17 @@ const ProductList: React.FC = () => {
                                 background: '#fff',
                                 borderRadius: '16px',
                                 boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-                                width: '240px',
+                                width: '230px',
+                                minHeight: '300px',
                                 padding: '1.5rem 1rem',
                                 textAlign: 'center',
                                 cursor: 'pointer',
                                 transition: 'box-shadow 0.2s, transform 0.2s',
                                 border: '1px solid #eee',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
                             }}
                             onMouseOver={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,112,67,0.15)')}
                             onMouseOut={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)')}
@@ -85,6 +99,18 @@ const ProductList: React.FC = () => {
                                 />
                             )}
                             <h3 style={{ margin: '0.5rem 0 0.25rem 0' }}>{store.name}</h3>
+                            <div style={{ margin: '0.25rem 0' }}>
+                                {store.rating !== undefined && (
+                                    <span style={{ color: '#FFD600', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                                        {Array.from({ length: 5 }).map((_, i) =>
+                                            i < Math.round(store.rating ?? 0) ? '★' : '☆'
+                                        )}
+                                        <span style={{ color: '#888', fontWeight: 'normal', fontSize: '0.95em', marginLeft: 6 }}>
+                                            {store.rating?.toFixed(1)}
+                                        </span>
+                                    </span>
+                                )}
+                            </div>
                             {store.address && <p style={{ fontSize: '0.95em', color: '#888', margin: 0 }}>{store.address}</p>}
                         </div>
                     ))}
@@ -94,7 +120,18 @@ const ProductList: React.FC = () => {
     }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                <span className="spinner" style={{ width: 32, height: 32, border: '4px solid #eee', borderTop: '4px solid #FF7043', borderRadius: '50%', display: 'inline-block', animation: 'spin 1s linear infinite' }} />
+                <div style={{ marginTop: 16 }}>Loading...</div>
+                <style>{`
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `}</style>
+            </div>
+        );
     }
 
     if (error) {
@@ -104,7 +141,6 @@ const ProductList: React.FC = () => {
     // Hitung total item dan total harga
     const totalItem = Object.values(quantities).reduce((a, b) => a + b, 0);
     const totalPrice = products.reduce((sum, p) => sum + (quantities[p.id] || 0) * p.price, 0);
-    // const navigate = useNavigate(); // Sudah dideklarasikan di atas
 
     // Data basket yang akan dikirim ke halaman detail
     const basket = products
@@ -136,14 +172,31 @@ const ProductList: React.FC = () => {
                 ←
             </span>
             <div style={{ height: '2.5rem' }} />
-            {products.map(product => (
-                <ProductItem
-                    key={product.id}
-                    product={product}
-                    quantity={quantities[product.id] || 0}
-                    onQuantityChange={qty => handleQuantityChange(product.id, qty)}
-                />
-            ))}
+            {products.length === 0 ? (
+                <div style={{ textAlign: 'center', color: '#888', marginTop: '2rem', fontSize: '1.1rem' }}>
+                    Belum ada product
+                </div>
+            ) : (
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '2rem',
+                        justifyItems: 'center',
+                        margin: '0 auto',
+                        maxWidth: '1100px',
+                    }}
+                >
+                    {products.map(product => (
+                        <ProductItem
+                            key={product.id}
+                            product={product}
+                            quantity={quantities[product.id] || 0}
+                            onQuantityChange={qty => handleQuantityChange(product.id, qty)}
+                        />
+                    ))}
+                </div>
+            )}
             {totalItem > 0 && (
                 <button
                     style={{

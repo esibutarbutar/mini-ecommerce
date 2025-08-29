@@ -33,7 +33,7 @@ const HistoryPage: React.FC = () => {
 
   return (
     <div style={{ maxWidth: 600, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
-      <button onClick={() => navigate(-1)} style={{ marginBottom: '1rem', fontSize: '1.2rem', background: 'none', border: 'none', color: '#FF7043', cursor: 'pointer' }}>← Kembali</button>
+  <button onClick={() => navigate('/')} style={{ marginBottom: '1rem', fontSize: '1.2rem', background: 'none', border: 'none', color: '#FF7043', cursor: 'pointer' }}>← Kembali</button>
       <h2>History Checkout</h2>
       {loading ? <div>Loading...</div> : error ? <div>Error: {error}</div> : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
