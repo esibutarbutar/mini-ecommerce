@@ -6,7 +6,6 @@ interface ProductItemProps {
 }
 
 const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
-    console.log('Product:', product); // Tambahkan ini
     return (
         <div className="product-item">
             <h3>{product.name}</h3>

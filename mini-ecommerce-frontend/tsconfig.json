@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext", // Gunakan esnext atau es2020 atau yang lebih baru
+    "module": "esnext", // Gunakan esnext atau esmodules jika menggunakan bundler
     "strict": true,
-    "jsx": "react",
+    "jsx": "react-jsx", // Gunakan react-jsx atau react-jsxdev
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -13,7 +13,9 @@
       "@pages/*": ["pages/*"],
       "@hooks/*": ["hooks/*"],
       "@types/*": ["types/*"]
-    }
+    },
+    "moduleResolution": "node", // Tambahkan moduleResolution
+    "lib": ["dom", "esnext"] // Tambahkan lib
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

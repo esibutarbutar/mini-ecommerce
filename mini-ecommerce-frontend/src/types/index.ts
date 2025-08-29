@@ -1,3 +1,9 @@
+export interface Store {
+    id: string;
+    name: string;
+    address?: string;
+    image_url?: string;
+}
 export interface Product {
     id: string;
     name: string;
