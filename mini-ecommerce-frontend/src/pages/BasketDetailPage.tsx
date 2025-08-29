@@ -14,6 +14,30 @@ const BasketDetailPage: React.FC = () => {
 
   const total = basket.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('http://localhost:8000/api/historycheckout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: basket, total })
+      });
+      if (!res.ok) throw new Error('Checkout gagal');
+      // Delay sebentar untuk efek loading
+      setTimeout(() => {
+        setLoading(false);
+        navigate('/success');
+      }, 800);
+    } catch (e: any) {
+      setError(e.message);
+      setLoading(false);
+    }
+  };
+
   return (
     <div style={{ maxWidth: 500, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
       <button onClick={() => navigate(-1)} style={{ marginBottom: '1rem', fontSize: '1.2rem', background: 'none', border: 'none', color: '#FF7043', cursor: 'pointer' }}>← Kembali</button>
@@ -38,6 +62,23 @@ const BasketDetailPage: React.FC = () => {
         </ul>
       )}
       <h3 style={{ textAlign: 'right', marginTop: '2rem' }}>Total: Rp {total.toLocaleString('id-ID')}</h3>
+      {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
+      {basket.length > 0 && (
+        <button onClick={handleCheckout} disabled={loading} style={{ marginTop: 24, width: '100%', background: '#FF7043', color: '#fff', border: 'none', borderRadius: 8, padding: '1rem', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}>
+          {loading ? (
+            <span>
+              <span className="spinner" style={{ marginRight: 8, width: 18, height: 18, border: '3px solid #fff', borderTop: '3px solid #FF7043', borderRadius: '50%', display: 'inline-block', animation: 'spin 1s linear infinite', verticalAlign: 'middle' }} />
+              Memproses...
+            </span>
+          ) : 'Checkout'}
+        </button>
+      )}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };

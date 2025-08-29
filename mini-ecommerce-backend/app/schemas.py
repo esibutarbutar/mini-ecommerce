@@ -1,4 +1,22 @@
+from typing import List, Any
 from pydantic import BaseModel
+
+class HistoryCheckoutBase(BaseModel):
+    items: Any  # list of items (basket)
+    total: float
+
+class HistoryCheckoutCreate(HistoryCheckoutBase):
+    pass
+
+
+from datetime import datetime
+
+class HistoryCheckout(HistoryCheckoutBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
 
 
 

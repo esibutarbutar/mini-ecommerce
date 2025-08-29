@@ -1,3 +1,30 @@
+from sqlalchemy import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import SQLAlchemyError
+from . import models, schemas
+import json
+
+async def create_history_checkout(db: AsyncSession, checkout: schemas.HistoryCheckoutCreate):
+    try:
+        db_obj = models.HistoryCheckout(
+            items=json.dumps(checkout.items),
+            total=checkout.total
+        )
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
+        return db_obj
+    except SQLAlchemyError as e:
+        print(f"Database error: {e}")
+        return None
+
+async def get_history_checkouts(db: AsyncSession):
+    try:
+        result = await db.execute(select(models.HistoryCheckout).order_by(models.HistoryCheckout.created_at.desc()))
+        return result.scalars().all()
+    except SQLAlchemyError as e:
+        print(f"Database error: {e}")
+        return []
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from . import models, schemas
