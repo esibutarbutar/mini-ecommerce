@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProductItem from './ProductItem';
 import { Product, Store } from '../types';
 
 const ProductList: React.FC = () => {
+    const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
+    const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
     const [stores, setStores] = useState<Store[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -29,7 +32,7 @@ const ProductList: React.FC = () => {
         fetchStores();
     }, []);
 
-    // Fetch products saat store dipilih
+    // Fetch products saat store dipilih dan reset quantities
     useEffect(() => {
         if (!selectedStore) return;
         const fetchProducts = async () => {
@@ -41,6 +44,7 @@ const ProductList: React.FC = () => {
                 }
                 const data = await response.json();
                 setProducts(data);
+                setQuantities({}); // reset quantities setiap ganti toko
             } catch (error: any) {
                 setError(error.message);
             } finally {
@@ -97,12 +101,72 @@ const ProductList: React.FC = () => {
         return <div>Error: {error}</div>;
     }
 
+    // Hitung total item dan total harga
+    const totalItem = Object.values(quantities).reduce((a, b) => a + b, 0);
+    const totalPrice = products.reduce((sum, p) => sum + (quantities[p.id] || 0) * p.price, 0);
+    // const navigate = useNavigate(); // Sudah dideklarasikan di atas
+
+    // Data basket yang akan dikirim ke halaman detail
+    const basket = products
+        .filter(p => (quantities[p.id] || 0) > 0)
+        .map(p => ({ product: p, quantity: quantities[p.id] }));
+
+    // Handler untuk update quantity dari ProductItem
+    const handleQuantityChange = (productId: string, qty: number) => {
+        setQuantities(q => ({ ...q, [productId]: qty }));
+    };
+
     return (
-        <div className="product-list">
-            <button onClick={() => setSelectedStore(null)} style={{ marginBottom: '16px' }}>← Kembali ke daftar toko</button>
+        <div className="product-list" style={{ position: 'relative' }}>
+            <span
+                onClick={() => setSelectedStore(null)}
+                style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    fontSize: '2rem',
+                    cursor: 'pointer',
+                    padding: '0.5rem 1rem',
+                    zIndex: 10,
+                    color: '#FF7043',
+                    userSelect: 'none',
+                }}
+                title="Kembali ke daftar toko"
+            >
+                ←
+            </span>
+            <div style={{ height: '2.5rem' }} />
             {products.map(product => (
-                <ProductItem key={product.id} product={product} />
+                <ProductItem
+                    key={product.id}
+                    product={product}
+                    quantity={quantities[product.id] || 0}
+                    onQuantityChange={qty => handleQuantityChange(product.id, qty)}
+                />
             ))}
+            {totalItem > 0 && (
+                <button
+                    style={{
+                        position: 'fixed',
+                        left: 0,
+                        bottom: 0,
+                        width: '100vw',
+                        background: '#FF7043',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 0,
+                        padding: '1.1rem 0',
+                        fontSize: '1.2rem',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        zIndex: 1000,
+                        boxShadow: '0 -2px 12px rgba(0,0,0,0.08)'
+                    }}
+                    onClick={() => navigate('/basket', { state: { basket } })}
+                >
+                    🧺 Basket: {totalItem} &nbsp; | &nbsp; Price Rp: {totalPrice.toLocaleString('id-ID')}
+                </button>
+            )}
         </div>
     );
 };
