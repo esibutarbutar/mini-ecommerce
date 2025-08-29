@@ -5,8 +5,8 @@ from .database import Base
 class Product(Base):
     __tablename__ = "products"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), index=True)         # tambahkan panjang
-    description = Column(String(500))              # tambahkan panjang
+    name = Column(String(255), index=True)
+    description = Column(String(500))
     price = Column(Float)
-    image_url = Column(String(255))                # tambahkan panjang
-    category = Column(String(100))                 # tambahkan panjang
+    image_url = Column(String(255))
+    category = Column(String(100))
