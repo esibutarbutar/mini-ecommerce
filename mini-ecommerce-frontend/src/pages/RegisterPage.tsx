@@ -1,0 +1,76 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const RegisterPage: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/^[^@\s]+@gmail\.com$/.test(email)) {
+      setError('Email harus menggunakan domain @gmail.com');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password minimal 6 karakter');
+      return;
+    }
+    setError(null);
+    // Simulasi register ke backend
+    try {
+      const res = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) throw new Error('Email sudah terdaftar atau error server');
+      setSuccess(true);
+      setTimeout(() => navigate('/login'), 1200);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 16 }}>
+          <label htmlFor="email" style={{ display: 'block', marginBottom: 6 }}>Email</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            style={{ width: '100%', padding: 10, borderRadius: 8, border: '1px solid #eee' }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: 16 }}>
+          <label htmlFor="password" style={{ display: 'block', marginBottom: 6 }}>Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            style={{ width: '100%', padding: 10, borderRadius: 8, border: '1px solid #eee' }}
+            required
+          />
+        </div>
+        {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
+        {success && <div style={{ color: 'green', marginBottom: 12 }}>Registrasi berhasil! Redirect ke login...</div>}
+        <button type="submit" style={{ width: '100%', background: '#FF7043', color: '#fff', border: 'none', borderRadius: 8, padding: '1rem', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+          Register
+        </button>
+      </form>
+      <div style={{ marginTop: 16, textAlign: 'center' }}>
+        Sudah punya akun? <span style={{ color: '#FF7043', cursor: 'pointer' }} onClick={() => navigate('/login')}>Login</span>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterPage;

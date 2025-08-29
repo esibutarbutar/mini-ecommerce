@@ -28,7 +28,7 @@ const StoresPage: React.FC = () => {
   return (
     <div style={{ maxWidth: 900, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
       <button onClick={() => navigate('/')} style={{ marginBottom: '1rem', fontSize: '1.2rem', background: 'none', border: 'none', color: '#FF7043', cursor: 'pointer' }}>← Kembali</button>
-      <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Daftar Toko</h2>
+  <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Recommendation For You</h2>
       {loading ? (
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>
           <span className="spinner" style={{ width: 32, height: 32, border: '4px solid #eee', borderTop: '4px solid #FF7043', borderRadius: '50%', display: 'inline-block', animation: 'spin 1s linear infinite' }} />

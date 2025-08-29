@@ -7,7 +7,7 @@ interface ProductItemProps {
     onQuantityChange: (qty: number) => void;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({ product, quantity, onQuantityChange }) => {
+const ProductItem: React.FC<ProductItemProps> = React.memo(({ product, quantity, onQuantityChange }) => {
     const handleAdd = () => onQuantityChange(quantity + 1);
     const handleSubtract = () => onQuantityChange(quantity > 0 ? quantity - 1 : 0);
 
@@ -33,6 +33,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, quantity, onQuantity
                 <img
                     src={product.image_url}
                     alt={product.name}
+                    loading="lazy"
                     style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '12px', marginBottom: '0.7rem' }}
                 />
                 <h3 style={{ margin: '0.5rem 0 0.25rem 0', fontSize: '1.1rem', fontWeight: 600 }}>{product.name}</h3>
@@ -46,6 +47,6 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, quantity, onQuantity
             </div>
         </div>
     );
-};
+});
 
 export default ProductItem;

@@ -10,7 +10,14 @@ interface BasketItem {
 const BasketDetailPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const basket: BasketItem[] = (location.state as { basket?: BasketItem[] })?.basket || [];
+  // Ambil basket dari navigation state atau localStorage
+  let basket: BasketItem[] = (location.state as { basket?: BasketItem[] })?.basket || [];
+  if (basket.length === 0) {
+    try {
+      const saved = localStorage.getItem('basket');
+      if (saved) basket = JSON.parse(saved);
+    } catch {}
+  }
 
   const total = basket.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
@@ -18,16 +25,34 @@ const BasketDetailPage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
 
   const handleCheckout = async () => {
-    setLoading(true);
     setError(null);
+    // Validasi jumlah produk
+    if (basket.length === 0) {
+      setError('Pilih minimal 1 produk untuk checkout.');
+      return;
+    }
+    // Cek login user
+    const user = localStorage.getItem('user');
+    if (!user) {
+      // Simpan basket ke localStorage sebelum redirect login
+      localStorage.setItem('basket', JSON.stringify(basket));
+      navigate('/login', { state: { from: '/basket' } });
+      return;
+    } else {
+      // Hapus basket dari localStorage setelah login sukses
+      localStorage.removeItem('basket');
+    }
+    setLoading(true);
     try {
+      const token = localStorage.getItem('token');
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
       const res = await fetch('http://localhost:8000/api/historycheckout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ items: basket, total })
       });
       if (!res.ok) throw new Error('Checkout gagal');
-      // Delay sebentar untuk efek loading
       setTimeout(() => {
         setLoading(false);
         navigate('/success');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductItem from './ProductItem';
 import { Product, Store } from '../types';
@@ -6,6 +6,8 @@ import { Product, Store } from '../types';
 const ProductList: React.FC = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
+    // Ambil kategori unik dari produk
+    const categories = useMemo(() => Array.from(new Set(products.map(p => p.category).filter(Boolean))), [products]);
     const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
     const [stores, setStores] = useState<Store[]>([]);
     const [loading, setLoading] = useState(true);
@@ -32,6 +34,16 @@ const ProductList: React.FC = () => {
         fetchStores();
     }, []);
 
+
+
+    // (Sudah dideklarasikan di atas sebelum filterUI)
+
+    // Filter states
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    // const [minPrice, setMinPrice] = useState<string>('');
+    // const [maxPrice, setMaxPrice] = useState<string>('');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
     // Fetch products saat store dipilih dan reset quantities
     useEffect(() => {
         if (!selectedStore) return;
@@ -54,10 +66,51 @@ const ProductList: React.FC = () => {
         fetchProducts();
     }, [selectedStore]);
 
+    // (Sudah dideklarasikan di atas sebelum filterUI)
+
+    // Filter UI
+    const filterUI = (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 12,
+            margin: '1rem 0 2rem 0',
+        }}>
+            <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)} style={{ padding: 8, borderRadius: 8, border: '1px solid #eee', minWidth: 180, marginBottom: 8 }}>
+                <option value="">Semua Kategori</option>
+                {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                ))}
+            </select>
+            <button
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                style={{ padding: 8, borderRadius: 8, border: '1px solid #eee', background: '#FF7043', color: '#fff', fontWeight: 'bold', cursor: 'pointer', minWidth: 180 }}
+            >
+                Sort Harga: {sortOrder === 'asc' ? 'Termurah' : 'Termahal'}
+            </button>
+        </div>
+    );
+
+
+    // --- OPTIMIZATION HOOKS (must be before any return) ---
+    const [debouncedCategory, setDebouncedCategory] = useState(selectedCategory);
+    useEffect(() => {
+        const handler = setTimeout(() => setDebouncedCategory(selectedCategory), 300);
+        return () => clearTimeout(handler);
+    }, [selectedCategory]);
+    const filteredProducts = useMemo(() => {
+        let result = products;
+        if (debouncedCategory) {
+            result = result.filter(p => p.category === debouncedCategory);
+        }
+        return result.sort((a, b) => sortOrder === 'asc' ? a.price - b.price : b.price - a.price);
+    }, [products, debouncedCategory, sortOrder]);
+
     if (!selectedStore) {
         return (
             <div>
-                <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Pilih Toko</h2>
+                <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Recommendation For You</h2>
                 <div
                     style={{
                         display: 'grid',
@@ -152,6 +205,9 @@ const ProductList: React.FC = () => {
         setQuantities(q => ({ ...q, [productId]: qty }));
     };
 
+    // (Sudah dideklarasikan di atas sebelum filterUI)
+
+
     return (
         <div className="product-list" style={{ position: 'relative' }}>
             <span
@@ -172,7 +228,60 @@ const ProductList: React.FC = () => {
                 ←
             </span>
             <div style={{ height: '2.5rem' }} />
-            {products.length === 0 ? (
+            {/* Filter UI */}
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 16,
+                margin: '1.5rem 0 2.5rem 0',
+                width: '100%',
+                flexWrap: 'wrap',
+            }}>
+                <select
+                    value={selectedCategory}
+                    onChange={e => setSelectedCategory(e.target.value)}
+                    style={{
+                        padding: '10px 16px',
+                        borderRadius: 8,
+                        border: '1.5px solid #FF7043',
+                        minWidth: 200,
+                        fontSize: '1rem',
+                        background: '#fff7f3',
+                        color: '#FF7043',
+                        fontWeight: 600,
+                        outline: 'none',
+                        boxShadow: '0 1px 4px rgba(255,112,67,0.07)',
+                        transition: 'border 0.2s',
+                    }}
+                >
+                    <option value="">Semua Kategori</option>
+                    {categories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                </select>
+                <button
+                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                    style={{
+                        padding: '10px 22px',
+                        borderRadius: 8,
+                        border: 'none',
+                        background: '#FF7043',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 1px 4px rgba(255,112,67,0.10)',
+                        transition: 'background 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseOver={e => (e.currentTarget.style.background = '#ff5722')}
+                    onMouseOut={e => (e.currentTarget.style.background = '#FF7043')}
+                >
+                    {sortOrder === 'asc' ? 'Sort: Termurah ▼' : 'Sort: Termahal ▲'}
+                </button>
+            </div>
+            {filteredProducts.length === 0 ? (
                 <div style={{ textAlign: 'center', color: '#888', marginTop: '2rem', fontSize: '1.1rem' }}>
                     Belum ada product
                 </div>
@@ -187,7 +296,7 @@ const ProductList: React.FC = () => {
                         maxWidth: '1100px',
                     }}
                 >
-                    {products.map(product => (
+                    {filteredProducts.map(product => (
                         <ProductItem
                             key={product.id}
                             product={product}

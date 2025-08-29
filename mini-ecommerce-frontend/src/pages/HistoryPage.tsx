@@ -14,11 +14,20 @@ const HistoryPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Anda belum login');
+      setHistory([]); // kosongkan history jika tidak login
+      setLoading(false);
+      return;
+    }
     const fetchHistory = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:8000/api/historycheckout');
+        const headers: any = { Authorization: `Bearer ${token}` };
+        const res = await fetch('http://localhost:8000/api/historycheckout', { headers });
         if (!res.ok) throw new Error('Gagal fetch history');
         const data = await res.json();
         setHistory(data);
