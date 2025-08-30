@@ -47,7 +47,7 @@ const BasketDetailPage: React.FC = () => {
       const token = localStorage.getItem('token');
       const headers: any = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
-      const res = await fetch('http://localhost:8000/api/historycheckout', {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/api/historycheckout`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ items: basket, total })

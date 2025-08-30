@@ -27,7 +27,7 @@ const HistoryPage: React.FC = () => {
       try {
         setLoading(true);
         const headers: any = { Authorization: `Bearer ${token}` };
-        const res = await fetch('http://localhost:8000/api/historycheckout', { headers });
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/api/historycheckout`, { headers });
         if (!res.ok) throw new Error('Gagal fetch history');
         const data = await res.json();
         setHistory(data);

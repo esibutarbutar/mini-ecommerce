@@ -12,7 +12,7 @@ const StoresPage: React.FC = () => {
     const fetchStores = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8000/api/stores');
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stores`);
         if (!response.ok) throw new Error('Gagal fetch stores');
         const data = await response.json();
         setStores(data);

@@ -21,7 +21,7 @@ const ProductList: React.FC = () => {
         const fetchStores = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:8000/api/stores');
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stores`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -46,7 +46,7 @@ const ProductList: React.FC = () => {
         const handler = setTimeout(async () => {
             setSearching(true);
             try {
-                const res = await fetch(`http://localhost:8000/api/search_products?q=${encodeURIComponent(searchQuery)}`);
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/api/search_products?q=${encodeURIComponent(searchQuery)}`);
                 if (!res.ok) throw new Error('Gagal fetch search');
                 const data = await res.json();
                 setSearchResults(data);
@@ -75,7 +75,7 @@ const ProductList: React.FC = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:8000/api/products?store_id=${selectedStore}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/products?store_id=${selectedStore}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
