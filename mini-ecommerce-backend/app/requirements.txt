@@ -3,3 +3,4 @@ uvicorn
 sqlalchemy
 aiomysql
 pydantic
+python-jose[cryptography]
