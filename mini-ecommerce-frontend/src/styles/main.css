@@ -1,3 +1,19 @@
+@media (max-width: 600px) {
+  .login-page, .register-page, .basket-detail-page {
+    padding: 0.7rem 2vw !important;
+    margin: 0.7rem 0 !important;
+    border-radius: 14px !important;
+    box-sizing: border-box;
+    max-width: 100vw !important;
+  }
+  .product-list.responsive-container {
+    padding: 0.7rem 2vw !important;
+    margin: 0.7rem 0 !important;
+    border-radius: 14px !important;
+    box-sizing: border-box;
+    max-width: 100vw !important;
+  }
+}
 /* Search bar styling */
 .search-bar-container {
   display: flex;

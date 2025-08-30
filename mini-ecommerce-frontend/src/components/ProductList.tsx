@@ -289,7 +289,7 @@ const ProductList: React.FC = () => {
 
 
     return (
-        <div className="product-list" style={{ position: 'relative' }}>
+        <div className="product-list responsive-container" style={{ position: 'relative', margin: '0 auto', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '1.2rem 0.5rem', maxWidth: 1200 }}>
             <span
                 onClick={() => setSelectedStore(null)}
                 style={{

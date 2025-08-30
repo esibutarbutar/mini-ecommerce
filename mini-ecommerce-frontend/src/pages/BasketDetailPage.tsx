@@ -64,7 +64,7 @@ const BasketDetailPage: React.FC = () => {
   };
 
   return (
-  <div className="responsive-container" style={{ maxWidth: 500, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
+  <div className="responsive-container basket-detail-page" style={{ maxWidth: 500, margin: '2rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
       <button onClick={() => navigate(-1)} style={{ marginBottom: '1rem', fontSize: '1.2rem', background: 'none', border: 'none', color: '#FF7043', cursor: 'pointer' }}>← Kembali</button>
       <h2>Detail Basket</h2>
       {basket.length === 0 ? (

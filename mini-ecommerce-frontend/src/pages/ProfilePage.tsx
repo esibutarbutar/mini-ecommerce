@@ -8,7 +8,9 @@ const ProfilePage: React.FC = () => {
     window.location.href = '/login';
   };
   return (
-  <div className="responsive-container" style={{ maxWidth: 420, margin: '3rem auto', background: '#fff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '2.5rem 2rem', position: 'relative' }}>
+    <div className="responsive-container" style={{ maxWidth: 420, margin: '3rem auto', background: '#fff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.10)', padding: '2.5rem 2rem', position: 'relative' }}>
+      {/* Icon back ke home */}
+      <button onClick={() => window.location.href = '/'} style={{ position: 'absolute', left: 16, top: 16, background: 'none', border: 'none', color: '#FF7043', fontSize: 22, cursor: 'pointer', fontWeight: 700, zIndex: 10 }} aria-label="Kembali ke Home">←</button>
       <h2 style={{ textAlign: 'center', marginBottom: 32, fontWeight: 700, fontSize: 28, letterSpacing: 1 }}>Profil Pengguna</h2>
       {user ? (
         <>
