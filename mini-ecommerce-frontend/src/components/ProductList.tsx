@@ -6,7 +6,9 @@ import { Product, Store } from '../types';
 const ProductList: React.FC = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
-    // Ambil kategori unik dari produk
+    const [searchResults, setSearchResults] = useState<any[]>([]); // {product, store}
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searching, setSearching] = useState(false);
     const categories = useMemo(() => Array.from(new Set(products.map(p => p.category).filter(Boolean))), [products]);
     const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
     const [stores, setStores] = useState<Store[]>([]);
@@ -33,6 +35,29 @@ const ProductList: React.FC = () => {
         };
         fetchStores();
     }, []);
+
+    // Search products globally
+    useEffect(() => {
+        if (!searchQuery) {
+            setSearchResults([]);
+            setSearching(false);
+            return;
+        }
+        const handler = setTimeout(async () => {
+            setSearching(true);
+            try {
+                const res = await fetch(`http://localhost:8000/api/search_products?q=${encodeURIComponent(searchQuery)}`);
+                if (!res.ok) throw new Error('Gagal fetch search');
+                const data = await res.json();
+                setSearchResults(data);
+            } catch (e: any) {
+                setError(e.message);
+            } finally {
+                setSearching(false);
+            }
+        }, 400);
+        return () => clearTimeout(handler);
+    }, [searchQuery]);
 
 
 
@@ -110,64 +135,126 @@ const ProductList: React.FC = () => {
     if (!selectedStore) {
         return (
             <div>
-                <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Recommendation For You</h2>
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
-                        gap: '2rem',
-                        justifyItems: 'center',
-                        margin: '0 auto',
-                        maxWidth: '1100px',
-                    }}
-                >
-                    {stores.map(store => (
-                        <div
-                            key={store.id}
-                            onClick={() => setSelectedStore(store.id)}
-                            style={{
-                                background: '#fff',
-                                borderRadius: '16px',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-                                width: '230px',
-                                minHeight: '300px',
-                                padding: '1.5rem 1rem',
-                                textAlign: 'center',
-                                cursor: 'pointer',
-                                transition: 'box-shadow 0.2s, transform 0.2s',
-                                border: '1px solid #eee',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
-                            onMouseOver={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,112,67,0.15)')}
-                            onMouseOut={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)')}
-                        >
-                            {store.image_url && (
-                                <img
-                                    src={store.image_url}
-                                    alt={store.name}
-                                    style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '12px', marginBottom: '1rem' }}
-                                />
-                            )}
-                            <h3 style={{ margin: '0.5rem 0 0.25rem 0' }}>{store.name}</h3>
-                            <div style={{ margin: '0.25rem 0' }}>
-                                {store.rating !== undefined && (
-                                    <span style={{ color: '#FFD600', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                                        {Array.from({ length: 5 }).map((_, i) =>
-                                            i < Math.round(store.rating ?? 0) ? '★' : '☆'
-                                        )}
-                                        <span style={{ color: '#888', fontWeight: 'normal', fontSize: '0.95em', marginLeft: 6 }}>
-                                            {store.rating?.toFixed(1)}
-                                        </span>
-                                    </span>
-                                )}
-                            </div>
-                            {store.address && <p style={{ fontSize: '0.95em', color: '#888', margin: 0 }}>{store.address}</p>}
-                        </div>
-                    ))}
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 1.5rem 0' }}>
+                    <input
+                        type="text"
+                        placeholder="Cari produk di semua toko..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        style={{
+                            padding: '12px 18px',
+                            borderRadius: 8,
+                            border: '1.5px solid #FF7043',
+                            minWidth: 320,
+                            fontSize: '1.1rem',
+                            background: '#fff7f3',
+                            color: '#FF7043',
+                            fontWeight: 600,
+                            outline: 'none',
+                            boxShadow: '0 1px 4px rgba(255,112,67,0.07)',
+                            marginRight: 12
+                        }}
+                    />
                 </div>
+                {searchQuery ? (
+                    <div>
+                        <h2 style={{ textAlign: 'center', margin: '1rem 0 1.5rem 0' }}>Hasil Pencarian Produk "{searchQuery}"</h2>
+                        {searching ? (
+                            <div style={{ textAlign: 'center', color: '#888', marginTop: '2rem' }}>Mencari...</div>
+                        ) : searchResults.length === 0 ? (
+                            <div style={{ textAlign: 'center', color: '#888', marginTop: '2rem' }}>Tidak ada produk ditemukan</div>
+                        ) : (
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(4, 1fr)',
+                                gap: '2rem',
+                                justifyItems: 'center',
+                                margin: '0 auto',
+                                maxWidth: '1100px',
+                            }}>
+                                {searchResults.map((item, idx) => (
+                                    <div key={item.product.id + '-' + idx} style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '1.5rem 1rem', minWidth: 220 }}>
+                                        <img src={item.product.image_url} alt={item.product.name} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 12, marginBottom: 12 }} />
+                                        <h3 style={{ margin: '0.5rem 0 0.25rem 0' }}>{item.product.name}</h3>
+                                        <div style={{ color: '#FF7043', fontWeight: 600, marginBottom: 6 }}>Rp {item.product.price.toLocaleString('id-ID')}</div>
+                                        <div style={{ fontSize: '0.97em', color: '#888', marginBottom: 6 }}>{item.product.category}</div>
+                                        <div style={{ fontSize: '0.97em', color: '#444', marginBottom: 6 }}>Toko: <b>{item.store.name}</b></div>
+                                        <div style={{ fontSize: '0.95em', color: '#888', marginBottom: 6 }}>{item.store.address}</div>
+                                        <div style={{ color: '#FFD600', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                                            {Array.from({ length: 5 }).map((_, i) =>
+                                                i < Math.round(item.store.rating ?? 0) ? '★' : '☆'
+                                            )}
+                                            <span style={{ color: '#888', fontWeight: 'normal', fontSize: '0.95em', marginLeft: 6 }}>
+                                                {item.store.rating?.toFixed(1)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <>
+                        <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Recommendation For You</h2>
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(4, 1fr)',
+                                gap: '2rem',
+                                justifyItems: 'center',
+                                margin: '0 auto',
+                                maxWidth: '1100px',
+                            }}
+                        >
+                            {stores.map(store => (
+                                <div
+                                    key={store.id}
+                                    onClick={() => setSelectedStore(store.id)}
+                                    style={{
+                                        background: '#fff',
+                                        borderRadius: '16px',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                                        width: '230px',
+                                        minHeight: '300px',
+                                        padding: '1.5rem 1rem',
+                                        textAlign: 'center',
+                                        cursor: 'pointer',
+                                        transition: 'box-shadow 0.2s, transform 0.2s',
+                                        border: '1px solid #eee',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                    }}
+                                    onMouseOver={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,112,67,0.15)')}
+                                    onMouseOut={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.07)')}
+                                >
+                                    {store.image_url && (
+                                        <img
+                                            src={store.image_url}
+                                            alt={store.name}
+                                            style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '12px', marginBottom: '1rem' }}
+                                        />
+                                    )}
+                                    <h3 style={{ margin: '0.5rem 0 0.25rem 0' }}>{store.name}</h3>
+                                    <div style={{ margin: '0.25rem 0' }}>
+                                        {store.rating !== undefined && (
+                                            <span style={{ color: '#FFD600', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                                                {Array.from({ length: 5 }).map((_, i) =>
+                                                    i < Math.round(store.rating ?? 0) ? '★' : '☆'
+                                                )}
+                                                <span style={{ color: '#888', fontWeight: 'normal', fontSize: '0.95em', marginLeft: 6 }}>
+                                                    {store.rating?.toFixed(1)}
+                                                </span>
+                                            </span>
+                                        )}
+                                    </div>
+                                    {store.address && <p style={{ fontSize: '0.95em', color: '#888', margin: 0 }}>{store.address}</p>}
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         );
     }

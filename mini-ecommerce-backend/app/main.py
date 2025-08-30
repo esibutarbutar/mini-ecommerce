@@ -1,6 +1,7 @@
 
 
 
+
 from fastapi import FastAPI, Depends, Body, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
@@ -119,6 +120,7 @@ async def get_history_checkout(db: AsyncSession = Depends(get_db), current_user:
         obj.items = json.loads(obj.items)
     return objs
 
+
 # Endpoint get products
 @app.get("/api/products", response_model=List[schemas.Product])
 async def read_products(page: int = 1, filter: str = "", store_id: int = None, db: AsyncSession = Depends(get_db)):
@@ -128,3 +130,11 @@ async def read_products(page: int = 1, filter: str = "", store_id: int = None, d
     products = await crud.get_products(db, skip=skip, limit=limit, filter=filter, store_id=store_id)
     logger.info(f"Returning {len(products)} products")
     return products
+
+# Endpoint search products globally (with store info)
+@app.get("/api/search_products")
+async def search_products(q: str = "", db: AsyncSession = Depends(get_db)):
+    # This assumes you have a function in crud.py to search products with store info
+    results = await crud.search_products_with_store(db, query=q)
+    # Return as list of dicts with product and store info
+    return results

@@ -78,12 +78,55 @@ async def get_stores(db: AsyncSession):
         print(f"Database error: {e}")
         return []
 
+
 async def get_products(db: AsyncSession, skip: int = 0, limit: int = 10, filter: str = "", store_id: int = None):
     try:
         query = select(models.Product)
         # filter dan store_id bisa diimplementasi sesuai kebutuhan
         result = await db.execute(query.offset(skip).limit(limit))
         return result.scalars().all()
+    except SQLAlchemyError as e:
+        print(f"Database error: {e}")
+        return []
+
+# Search products globally with store info
+from sqlalchemy import or_
+async def search_products_with_store(db: AsyncSession, query: str = ""):
+    try:
+        stmt = select(
+            models.Product,
+            models.Store
+        ).join(
+            models.Store, models.Product.store_id == models.Store.id
+        )
+        if query:
+            stmt = stmt.where(
+                or_(models.Product.name.ilike(f"%{query}%"), models.Store.name.ilike(f"%{query}%"))
+            )
+        result = await db.execute(stmt)
+        rows = result.all()
+        # Return as list of dicts with product and store info
+        return [
+            {
+                "product": {
+                    "id": p.id,
+                    "name": p.name,
+                    "description": p.description,
+                    "price": p.price,
+                    "image_url": p.image_url,
+                    "category": p.category,
+                    "store_id": p.store_id
+                },
+                "store": {
+                    "id": s.id,
+                    "name": s.name,
+                    "address": s.address,
+                    "image_url": s.image_url,
+                    "rating": s.rating
+                }
+            }
+            for p, s in rows
+        ]
     except SQLAlchemyError as e:
         print(f"Database error: {e}")
         return []
