@@ -1,4 +1,5 @@
 
+
 # mini-ecommerce
 
 ## Demo Online
@@ -27,52 +28,42 @@ Aplikasi mini-ecommerce dengan backend FastAPI (Python) dan frontend React (Type
 
 ## Setup & Menjalankan
 
-### 1. Backend (FastAPI)
+### Backend (FastAPI)
+1. Masuk ke folder backend:
+	```bash
+	cd mini-ecommerce-backend/app
+	```
+2. (Opsional) Buat & aktifkan virtualenv:
+	```bash
+	python -m venv venv
+	# Windows:
+	venv\Scripts\activate
+	```
+3. Install dependensi:
+	```bash
+	pip install -r requirements.txt
+	```
+4. Jalankan server:
+	```bash
+	uvicorn main:app --reload
+	```
+5. Konfigurasi Database:
+	- Default: MySQL (edit di `database.py` jika perlu)
 
-#### a. Masuk ke folder backend:
-```bash
-cd mini-ecommerce-backend/app
-```
-
-#### b. Buat & aktifkan virtualenv (opsional):
-```bash
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-```
-
-#### c. Install dependensi:
-```bash
-pip install -r requirements.txt
-```
-
-#### d. Jalankan server:
-```bash
-uvicorn main:app --reload
-```
-
-#### e. Konfigurasi Database:
-- Default: MySQL (edit di `database.py` jika perlu)
-
-
-### 2. Frontend (React)
-
-#### a. Masuk ke folder frontend:
-```bash
-cd mini-ecommerce-frontend
-```
-
-#### b. Install dependensi:
-```bash
-npm install
-```
-
-#### c. Jalankan aplikasi:
-```bash
-npm start
-```
-
-Akses di: [http://localhost:3000](http://localhost:3000)
+### Frontend (React)
+1. Masuk ke folder frontend:
+	```bash
+	cd mini-ecommerce-frontend
+	```
+2. Install dependensi:
+	```bash
+	npm install
+	```
+3. Jalankan aplikasi:
+	```bash
+	npm start
+	```
+	Akses di: [http://localhost:3000](http://localhost:3000)
 
 ---
 

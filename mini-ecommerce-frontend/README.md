@@ -67,15 +67,3 @@ Ini adalah aplikasi mini e-commerce berbasis React + TypeScript. Pengguna dapat 
    ```
    Akses di `http://localhost:3000`.
 
-## Build Production
-Jalankan:
-```
-npm run build
-```
-Hasil build ada di folder `build`.
-
-## Kontribusi
-Silakan buat issue atau pull request jika ada saran/bug.
-
-## Lisensi
-MIT License.
