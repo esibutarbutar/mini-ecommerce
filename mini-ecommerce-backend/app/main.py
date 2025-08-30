@@ -16,11 +16,11 @@ import logging
 
 
 # Absolute import only (for stable deployment)
+app = FastAPI()
 from app import models, schemas, crud
 from app.database import SessionLocal, engine, Base
 
 
-app = FastAPI()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 app.add_middleware(
