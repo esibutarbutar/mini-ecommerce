@@ -36,7 +36,15 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
+    <div style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem', position: 'relative' }}>
+      {/* Icon/tombol back */}
+      <button
+        onClick={() => navigate('/')}
+        style={{ position: 'absolute', left: 16, top: 16, background: 'none', border: 'none', color: '#FF7043', fontSize: 22, cursor: 'pointer', fontWeight: 700 }}
+        aria-label="Kembali ke Home"
+      >
+        ←
+      </button>
       <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Register</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 16 }}>

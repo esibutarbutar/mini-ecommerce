@@ -82,7 +82,10 @@ async def get_stores(db: AsyncSession):
 async def get_products(db: AsyncSession, skip: int = 0, limit: int = 10, filter: str = "", store_id: int = None):
     try:
         query = select(models.Product)
-        # filter dan store_id bisa diimplementasi sesuai kebutuhan
+        if store_id:
+            query = query.where(models.Product.store_id == store_id)
+        if filter:
+            query = query.where(models.Product.name.ilike(f"%{filter}%"))
         result = await db.execute(query.offset(skip).limit(limit))
         return result.scalars().all()
     except SQLAlchemyError as e:
