@@ -1,3 +1,5 @@
+# Untuk validasi email pada Pydantic
+email-validator
 fastapi
 uvicorn
 sqlalchemy
