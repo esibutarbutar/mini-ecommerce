@@ -1,7 +1,18 @@
 @media (max-width: 600px) {
+  .product-item {
+    width: 100%;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    margin: 0.7rem 0.7rem !important;
+    padding: 1.2rem 0.7rem !important;
+    border-radius: 18px !important;
+    box-shadow: 0 2px 16px rgba(255,112,67,0.13) !important;
+    font-size: 1.05rem;
+    box-sizing: border-box;
+  }
   .login-page, .register-page {
     max-width: 98vw !important;
-    margin: 2.5rem auto 1.5rem auto !important;
+    margin: 2.5rem 0.7rem 1.5rem 0.7rem !important;
     padding: 2rem 6vw 1.5rem 6vw !important;
     border-radius: 18px !important;
     background: #fff;
@@ -11,7 +22,7 @@
   }
   .basket-detail-page {
     padding: 1.2rem 4vw !important;
-    margin: 1.2rem auto !important;
+    margin: 1.2rem 0.7rem !important;
     border-radius: 16px !important;
     box-sizing: border-box;
     max-width: 100vw !important;
@@ -79,17 +90,7 @@
     border-radius: 0 0 18px 18px;
     box-shadow: 0 2px 12px rgba(255,112,67,0.10);
   }
-  .product-item {
-    width: calc(100vw - 32px) !important;
-    min-width: 0 !important;
-    max-width: 100vw !important;
-    margin: 0.7rem auto !important;
-    padding: 1.2rem 0.7rem !important;
-    border-radius: 18px !important;
-    box-shadow: 0 2px 16px rgba(255,112,67,0.13) !important;
-    font-size: 1.05rem;
-    box-sizing: border-box;
-  }
+  /* Hapus duplikasi .product-item di bawah, gunakan yang di atas saja */
   .basket-detail-page, .history-page, .login-page, .register-page {
     padding-left: 16px !important;
     padding-right: 16px !important;
