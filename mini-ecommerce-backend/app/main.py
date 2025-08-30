@@ -6,8 +6,8 @@
 from fastapi import FastAPI, Depends, Body, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from . import models, schemas, crud
-from .database import SessionLocal, engine, Base
+from app import models, schemas, crud
+from app.database import SessionLocal, engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
