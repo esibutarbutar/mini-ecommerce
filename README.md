@@ -1,62 +1,114 @@
-# mini-ecommerce
+# Mini E-Commerce
 
-A simple mini-ecommerce app with FastAPI backend and React frontend.
+Aplikasi mini-ecommerce dengan backend FastAPI (Python) dan frontend React (TypeScript).
+
+---
 
 ## Fitur
-- Register, login, dan autentikasi JWT
-- List produk, filter, dan keranjang belanja
-- Checkout dan riwayat pesanan per user
+- Register, login, autentikasi JWT
+- List produk, filter, keranjang belanja
+- Checkout & histori pesanan per user
+- Search produk global
 - Optimasi performa (lazy load gambar, memoization, debouncing filter)
+- Responsive UI/UX
+- Unit test frontend & backend
+
+---
 
 ## Struktur Repo
 - `mini-ecommerce-backend/` — Backend FastAPI (Python)
 - `mini-ecommerce-frontend/` — Frontend React (TypeScript)
 
-## Setup Backend (FastAPI)
-1. Masuk ke folder backend:
-	```
-	cd mini-ecommerce-backend/app
-	```
-2. Buat virtualenv (opsional):
-	```
-	python -m venv .venv
-	```
-3. Aktifkan virtualenv (Windows):
-	```
-	.venv\Scripts\activate
-	```
-4. Install dependencies:
-	```
-	pip install -r requirements.txt
-	```
-5. Jalankan server:
-	```
-	uvicorn main:app --reload
-	```
+---
 
-## Setup Frontend (React)
-1. Masuk ke folder frontend:
-	```
-	cd mini-ecommerce-frontend
-	```
-2. Install dependencies:
-	```
-	npm install
-	```
-3. Jalankan aplikasi:
-	```
-	npm start
-	```
-4. Buka di browser: [http://localhost:3000](http://localhost:3000)
+## Setup & Menjalankan
 
-## Konfigurasi Database
-- Pastikan MySQL sudah berjalan dan sudah dibuat database sesuai setting di backend.
-- Edit koneksi di `mini-ecommerce-backend/app/database.py` jika perlu.
+### 1. Backend (FastAPI)
 
-## Catatan
-- Untuk development, backend berjalan di port 8000 dan frontend di 3000.
-- Cek file README di masing-masing folder untuk info lebih detail.
+#### a. Masuk ke folder backend:
+```bash
+cd mini-ecommerce-backend/app
+```
+
+#### b. Buat & aktifkan virtualenv (opsional):
+```bash
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+```
+
+#### c. Install dependensi:
+```bash
+pip install -r requirements.txt
+```
+
+#### d. Jalankan server:
+```bash
+uvicorn main:app --reload
+```
+
+#### e. Konfigurasi Database:
+- Default: MySQL (edit di `database.py` jika perlu)
+
+
+### 2. Frontend (React)
+
+#### a. Masuk ke folder frontend:
+```bash
+cd mini-ecommerce-frontend
+```
+
+#### b. Install dependensi:
+```bash
+npm install
+```
+
+#### c. Jalankan aplikasi:
+```bash
+npm start
+```
+
+Akses di: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-**By: esibutarbutar**
+## Dependensi Utama
+
+### Backend:
+- fastapi
+- uvicorn
+- sqlalchemy
+- aiomysql
+- pydantic
+- passlib
+- jose
+
+### Frontend:
+- react
+- react-router-dom
+- typescript
+- @testing-library/react
+- @testing-library/jest-dom
+- jest
+
+---
+
+## Testing
+
+### Backend:
+```bash
+cd mini-ecommerce-backend/app
+pytest
+```
+
+### Frontend:
+```bash
+cd mini-ecommerce-frontend
+npm test
+```
+
+---
+
+## Catatan
+- Backend: port 8000, Frontend: port 3000
+
