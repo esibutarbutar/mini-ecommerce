@@ -32,7 +32,12 @@ const LoginPage: React.FC = () => {
       }
       const data = await res.json();
       localStorage.setItem('token', data.access_token);
-      localStorage.setItem('user', JSON.stringify({ email }));
+      // Simpan data user lengkap (email, full_name, dst) jika ada
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      } else {
+        localStorage.setItem('user', JSON.stringify({ email }));
+      }
       navigate(from, { replace: true });
     } catch (e: any) {
       setError(e.message || 'Login gagal');

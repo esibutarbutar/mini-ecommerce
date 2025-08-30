@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage: React.FC = () => {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +25,7 @@ const RegisterPage: React.FC = () => {
       const res = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ full_name: fullName, email, password })
       });
       if (!res.ok) throw new Error('Email sudah terdaftar atau error server');
       setSuccess(true);
@@ -38,6 +39,17 @@ const RegisterPage: React.FC = () => {
     <div style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem' }}>
       <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Register</h2>
       <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 16 }}>
+          <label htmlFor="fullName" style={{ display: 'block', marginBottom: 6 }}>Nama Lengkap</label>
+          <input
+            id="fullName"
+            type="text"
+            value={fullName}
+            onChange={e => setFullName(e.target.value)}
+            style={{ width: '100%', padding: 10, borderRadius: 8, border: '1px solid #eee' }}
+            required
+          />
+        </div>
         <div style={{ marginBottom: 16 }}>
           <label htmlFor="email" style={{ display: 'block', marginBottom: 6 }}>Email</label>
           <input
