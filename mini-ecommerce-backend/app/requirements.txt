@@ -1,4 +1,4 @@
-# Untuk validasi email pada Pydantic
+passlib
 email-validator
 fastapi
 uvicorn
