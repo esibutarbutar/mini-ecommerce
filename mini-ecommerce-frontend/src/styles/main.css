@@ -1,3 +1,79 @@
+/* Search bar styling */
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1.5rem 0;
+}
+.search-bar-input {
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: 1.5px solid #FF7043;
+  min-width: 320px;
+  font-size: 1.1rem;
+  background: #fff7f3;
+  color: #FF7043;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 0 1px 4px rgba(255,112,67,0.07);
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.search-bar-input:focus {
+  border: 2px solid #FF7043;
+  box-shadow: 0 2px 8px rgba(255,112,67,0.13);
+}
+@media (max-width: 600px) {
+  .search-bar-container {
+    margin: 1.2rem 0 1rem 0;
+    padding: 0 0.5rem;
+  }
+  .search-bar-input {
+    min-width: 0;
+    width: 100%;
+    font-size: 1rem;
+    padding: 11px 14px;
+    border-radius: 18px;
+    background: #fff;
+    color: #FF7043;
+    box-shadow: 0 1px 8px rgba(255,112,67,0.10);
+  }
+}
+
+/* Profile icon filled style */
+.profile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FF7043;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(255,112,67,0.10);
+  margin-left: 8px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.profile-icon:hover {
+  background: #ff8a50;
+  box-shadow: 0 4px 16px rgba(255,112,67,0.18);
+}
+@media (max-width: 600px) {
+  .profile-icon {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    border-radius: 50%;
+    background: #FF7043;
+    color: #fff;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(255,112,67,0.13);
+  }
+}
 body {
   background: #FFF3E0;
   color: #333;

@@ -135,26 +135,14 @@ const ProductList: React.FC = () => {
     if (!selectedStore) {
         return (
             <div>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 1.5rem 0' }}>
+                <div className="search-bar-container">
                     <input
                         id="search-bar"
                         type="text"
                         placeholder="Cari produk di semua toko..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        style={{
-                            padding: '12px 18px',
-                            borderRadius: 8,
-                            border: '1.5px solid #FF7043',
-                            minWidth: 320,
-                            fontSize: '1.1rem',
-                            background: '#fff7f3',
-                            color: '#FF7043',
-                            fontWeight: 600,
-                            outline: 'none',
-                            boxShadow: '0 1px 4px rgba(255,112,67,0.07)',
-                            marginRight: 12
-                        }}
+                        className="search-bar-input"
                     />
                 </div>
                 {searchQuery ? (
