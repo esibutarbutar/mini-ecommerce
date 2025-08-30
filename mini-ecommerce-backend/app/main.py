@@ -14,13 +14,10 @@ from datetime import datetime, timedelta
 import json
 import logging
 
-# Modular import: compatible for both Railway (module) and local (script) run
-try:
-    from app import models, schemas, crud
-    from app.database import SessionLocal, engine, Base
-except ImportError:
-    from . import models, schemas, crud
-    from .database import SessionLocal, engine, Base
+
+# Absolute import only (for stable deployment)
+from app import models, schemas, crud
+from app.database import SessionLocal, engine, Base
 
 
 app = FastAPI()
