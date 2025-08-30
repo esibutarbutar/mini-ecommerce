@@ -1,4 +1,11 @@
+
 # Mini E-Commerce Frontend
+
+## Live Demo
+
+- **Frontend:** [https://mini-ecommerce-topaz.vercel.app/](https://mini-ecommerce-topaz.vercel.app/)
+- **Backend API:** [https://mini-ecommerce-production-5d93.up.railway.app](https://mini-ecommerce-production-5d93.up.railway.app)
+
 
 This is a mini e-commerce application built with React and TypeScript. It allows users to browse products, add them to a cart, and proceed to checkout.
 
@@ -20,45 +27,55 @@ This is a mini e-commerce application built with React and TypeScript. It allows
 ### Prerequisites
 
 - Node.js (version 14 or higher)
-- npm (version 6 or higher)
 
-### Installation
+# Mini E-Commerce Frontend
 
-1. Clone the repository:
+## Demo Online
+
+- **Frontend:** [https://mini-ecommerce-topaz.vercel.app/](https://mini-ecommerce-topaz.vercel.app/)
+- **Backend API:** [https://mini-ecommerce-production-5d93.up.railway.app](https://mini-ecommerce-production-5d93.up.railway.app)
+
+Ini adalah aplikasi mini e-commerce berbasis React + TypeScript. Pengguna dapat melihat produk, menambah ke keranjang, checkout, dan melihat histori pesanan.
+
+## Fitur
+- **Daftar Produk:** Lihat produk, filter, dan pencarian.
+- **Detail Produk:** Info lengkap tiap produk.
+- **Keranjang:** Tambah, update, hapus item.
+- **Checkout:** Form checkout sederhana.
+- **Histori Pesanan:** Lihat riwayat belanja user.
+
+## Cara Akses
+- Buka link frontend di atas untuk mencoba aplikasi.
+- Untuk API/backend, gunakan link backend di atas (atau akses `/docs` untuk dokumentasi endpoint).
+
+## Cara Jalankan Lokal
+1. Clone repo ini:
    ```
    git clone <repository-url>
    ```
-
-2. Navigate to the project directory:
+2. Masuk ke folder frontend:
    ```
    cd mini-ecommerce-frontend
    ```
-
-3. Install the dependencies:
+3. Install dependencies:
    ```
    npm install
    ```
+4. Jalankan development server:
+   ```
+   npm start
+   ```
+   Akses di `http://localhost:3000`.
 
-### Running the Application
-
-To start the development server, run:
-```
-npm start
-```
-The application will be available at `http://localhost:3000`.
-
-### Building for Production
-
-To create a production build, run:
+## Build Production
+Jalankan:
 ```
 npm run build
 ```
-The build artifacts will be stored in the `build` directory.
+Hasil build ada di folder `build`.
 
-## Contributing
+## Kontribusi
+Silakan buat issue atau pull request jika ada saran/bug.
 
-Feel free to submit issues or pull requests for any improvements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License.
+## Lisensi
+MIT License.

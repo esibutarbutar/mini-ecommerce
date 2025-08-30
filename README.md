@@ -1,4 +1,9 @@
+
 # mini-ecommerce
+
+## Demo Online
+- **Frontend:** [https://mini-ecommerce-topaz.vercel.app/](https://mini-ecommerce-topaz.vercel.app/)
+- **Backend API:** [https://mini-ecommerce-production-5d93.up.railway.app](https://mini-ecommerce-production-5d93.up.railway.app)
 
 Aplikasi mini-ecommerce dengan backend FastAPI (Python) dan frontend React (TypeScript).
 
@@ -9,7 +14,6 @@ Aplikasi mini-ecommerce dengan backend FastAPI (Python) dan frontend React (Type
 - List produk, filter, keranjang belanja
 - Checkout & histori pesanan per user
 - Search produk global
-- Optimasi performa (lazy load gambar, memoization, debouncing filter)
 - Responsive UI/UX
 - Unit test frontend & backend
 

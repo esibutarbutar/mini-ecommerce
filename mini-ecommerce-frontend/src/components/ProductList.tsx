@@ -137,6 +137,7 @@ const ProductList: React.FC = () => {
             <div>
                 <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 1.5rem 0' }}>
                     <input
+                        id="search-bar"
                         type="text"
                         placeholder="Cari produk di semua toko..."
                         value={searchQuery}
@@ -327,6 +328,7 @@ const ProductList: React.FC = () => {
                 flexWrap: 'wrap',
             }}>
                 <select
+                    id="category-select"
                     value={selectedCategory}
                     onChange={e => setSelectedCategory(e.target.value)}
                     style={{
