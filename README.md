@@ -1,4 +1,4 @@
-# Mini E-Commerce
+# mini-ecommerce
 
 Aplikasi mini-ecommerce dengan backend FastAPI (Python) dan frontend React (TypeScript).
 
@@ -49,7 +49,7 @@ uvicorn main:app --reload
 
 #### e. Konfigurasi Database:
 - Default: MySQL (edit di `database.py` jika perlu)
-- Untuk test: otomatis pakai SQLite in-memory
+
 
 ### 2. Frontend (React)
 
@@ -111,15 +111,4 @@ npm test
 
 ## Catatan
 - Backend: port 8000, Frontend: port 3000
-- Untuk development/testing, backend bisa pakai SQLite otomatis
-- Untuk production, pastikan MySQL sudah dikonfigurasi
-- Semua endpoint API prefiks `/api/`
 
----
-
-## Kontribusi
-Pull request & issue sangat diterima!
-
----
-
-**By: esibutarbutar**
