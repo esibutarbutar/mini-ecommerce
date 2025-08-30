@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const OrderSuccessPage: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <div style={{ maxWidth: 400, margin: '4rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2.5rem', textAlign: 'center' }}>
+    <div className="responsive-container" style={{ maxWidth: 400, margin: '4rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2.5rem', textAlign: 'center' }}>
       <div style={{ fontSize: 64, color: '#4BB543', marginBottom: 24 }}>✔️</div>
       <h2>Pesanan Berhasil!</h2>
       <p>Terima kasih, pesanan kamu sudah diterima.</p>

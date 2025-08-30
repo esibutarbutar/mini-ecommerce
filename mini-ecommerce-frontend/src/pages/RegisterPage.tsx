@@ -36,7 +36,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem', position: 'relative' }}>
+  <div className="responsive-container" style={{ maxWidth: 400, margin: '3rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '2rem', position: 'relative' }}>
       {/* Icon/tombol back */}
       <button
         onClick={() => navigate('/')}

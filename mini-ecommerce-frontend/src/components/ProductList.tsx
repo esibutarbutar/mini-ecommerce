@@ -165,14 +165,17 @@ const ProductList: React.FC = () => {
                         ) : searchResults.length === 0 ? (
                             <div style={{ textAlign: 'center', color: '#888', marginTop: '2rem' }}>Tidak ada produk ditemukan</div>
                         ) : (
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(4, 1fr)',
-                                gap: '2rem',
-                                justifyItems: 'center',
-                                margin: '0 auto',
-                                maxWidth: '1100px',
-                            }}>
+                            <div
+                                className="responsive-grid"
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gap: '2rem',
+                                    justifyItems: 'center',
+                                    margin: '0 auto',
+                                    maxWidth: '1100px',
+                                }}
+                            >
                                 {searchResults.map((item, idx) => (
                                     <div key={item.product.id + '-' + idx} style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.07)', padding: '1.5rem 1rem', minWidth: 220 }}>
                                         <img src={item.product.image_url} alt={item.product.name} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 12, marginBottom: 12 }} />
@@ -198,6 +201,7 @@ const ProductList: React.FC = () => {
                     <>
                         <h2 style={{ textAlign: 'center', margin: '2rem 0 1rem 0' }}>Recommendation For You</h2>
                         <div
+                            className="responsive-grid"
                             style={{
                                 display: 'grid',
                                 gridTemplateColumns: 'repeat(4, 1fr)',
@@ -376,6 +380,7 @@ const ProductList: React.FC = () => {
                 </div>
             ) : (
                 <div
+                    className="responsive-grid"
                     style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(4, 1fr)',
@@ -421,5 +426,29 @@ const ProductList: React.FC = () => {
         </div>
     );
 };
+
+// Responsive grid CSS
+const style = document.createElement('style');
+style.innerHTML = `
+    .responsive-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        justify-items: center;
+        margin: 0 auto;
+        max-width: 1100px;
+    }
+    @media (max-width: 900px) {
+        .responsive-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 600px) {
+        .responsive-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+`;
+document.head.appendChild(style);
 
 export default ProductList;
